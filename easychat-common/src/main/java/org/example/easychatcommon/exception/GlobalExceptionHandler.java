@@ -1,6 +1,7 @@
 package org.example.easychatcommon.exception;
 
 import com.google.common.collect.ImmutableMap;
+import lombok.extern.slf4j.Slf4j;
 import org.example.easychatcommon.protocol.CommonCode;
 import org.example.easychatcommon.protocol.ResultCode;
 import org.example.easychatcommon.protocol.ResultResponse;
@@ -12,10 +13,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     private static ImmutableMap<Class<? extends Throwable>, ResultCode> EXCEPTION_MAP;
     protected static ImmutableMap.Builder<Class<? extends Throwable>, ResultCode> builder = ImmutableMap.builder();
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResultResponse<Object> handleException(Exception e) {
-        logger.error("catch exception:{}\r\n",e.getMessage(), e);
+        log.error("catch exception:{}\r\n",e.getMessage(), e);
         if(e instanceof CustomException) {
             CustomException customException = (CustomException) e;
             ResultCode resultCode =customException.getResultCode();
